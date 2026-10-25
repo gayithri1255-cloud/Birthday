@@ -15,7 +15,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #eaf8ff 0%, #d9efff 50%, #edf7ff 100%);
+            background: linear-gradient(135deg, #fff0f5 0%, #f3e8ff 50%, #ffe4ec 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -56,11 +56,12 @@
 
         /* Main and Letter Cards */
         .container {
+            position: relative;
             text-align: center;
             background: rgba(255, 255, 255, 0.88);
             padding: 40px 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(75, 145, 190, 0.12);
+            box-shadow: 0 10px 30px rgba(190, 75, 130, 0.12);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             width: 90%;
@@ -84,12 +85,15 @@
             margin-bottom: 30px;
         }
 
+        /* Button Area */
         .btn-container {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 20px;
             position: relative;
-            min-height: 60px;
+            min-height: 120px;
+            width: 100%;
         }
 
         button {
@@ -117,6 +121,10 @@
             color: white;
             position: absolute;
             left: 55%;
+            top: 10px;
+            transition: left 0.12s ease, top 0.12s ease;
+            touch-action: manipulation;
+            z-index: 20;
         }
 
         .hidden {
@@ -174,6 +182,10 @@
             .container {
                 transition: none;
             }
+
+            #noBtn {
+                transition: none;
+            }
         }
     </style>
 </head>
@@ -190,7 +202,7 @@
 
         <div class="btn-container">
             <button id="yesBtn" onclick="revealLove()">Yes</button>
-            <button id="noBtn">No</button>
+            <button id="noBtn" type="button">No</button>
         </div>
     </div>
 
@@ -202,7 +214,7 @@
 
 Naav avattu terrace alli kuthu mathadiddu... Mane mundhe....horag ninthkond mathadiddu.. Manei hinde muthh kottiddu.. Call alli mathadirodu.. Yappa istella mathadthana ee hudgu ansirodu.. Nim cute cute naughty msgs yella reply agatte nan thale li yavagalu... Nimgu heege agatto Or nang maathra na gotilla... Allaaa gottu nimge already thale li thumba iratte yochne madakke antha but nan bagge avaga avaga adru atleast dinakke ondhinda adru nenskolthira??? Yenoo nang doubt..
 
-Uncle en helidare antha neev ivaga ivaga distanta agirodu.. Msg kammiii madodu nangeno hopes build agatte antha lame replies.. Idelladrinda nangen effect agalla bit bejar agatte kanri.... Gottuu.. 100% impossible antha helidira adru neev haagella reply madodu swalpa alla jasthi ne bejar agatte kanrii.. Nimgelli naan disturb madthidino Or irritate madthidinoo nimge nan bagge ontara disgust feel agatteno anthella ansatte...
+Uncle en helidare antha neev ivaga ivaga distanta agirodu.. Msg kammiii madodu nangeno hopes build agatte antha lame replies.. Idelladrinda nangen effect agalla but bejar agatte kanri.... Gottuu.. 100% impossible antha helidira adru neev haagella reply madodu swalpa alla jasthi ne bejar agatte kanrii.. Nimgelli naan disturb madthidino Or irritate madthidinoo nimge nan bagge ontara disgust feel agatteno anthella ansatte...
 
 Naan nimna 2 yrs no no no andru neev nanna bidlilla eega neev oppkolalla andidd thakshna naan hegri giveup madli... Nan samadhanakke adru naan try madthini in the end fail adre agli nan best try madidde atleast anno feel iratte enuu madade ne sigli andhkondre adu sigalla antha nang ansatte please istella helthidini ee hudgi ge amele bejar agatte eegle complete agi cutoff madbeku anthella andhkobedri...
 
@@ -214,7 +226,7 @@ At last but not the least of course... Helthiddre mugiyalla.. But jaasthi helidd
 
 Jaasthi aythu ansatte but heg helodu gotilla maybe eeg helbahudu antha helde.. Estond vishya already helidini nimge..
 
-So... Sorry time waste agide ansiddre istondella odhbekaythu... But I feel like I want to squeeze into ur arms and hug you tightly and never let you go anno thara and just bury my face into you chest and stay like that forever anno thara yella ansatte... I just don't know naan hege express maadli antha.. I just love you 🫂.. I'm proud of what u r doing... You may feel like naan enu madilla inna antha but I trust ur process and I trust you.. Make aunty proud... I will always be one of the biggest well wishers of you ever
+So... Sorry time waste agide ansiddre istondella odhbekaythu... But I feel like I want to squeeze into ur arms and hug you tightly and never let you go anno thara and just bury my face into you chest and stay like that forever anno thara yella ansatte... You are sooo cute to me, imean not just your looks but your personality too.. the things you say re cute, your laugh is cute [you saw you laugh rarely ], your smile evrything is cute about you.....i feel like cute is farrrr more better than handome adhke yavaglu cute anthini...I just don't know naan hege express maadli antha.. I just love you 🫂.. I'm proud of what u r doing... You may feel like naan enu madilla inna antha but I trust ur process and I trust you.. Make aunty proud... I will always be one of the biggest well wishers of you ever
 
 Please istella helidini neev matte full ignore mado thara or distant action madbedi... Even if we didn't end up with each other in our lives still a part of my heart always belongs to you because you are the 1st person that I ever felt like this about...
 
@@ -248,35 +260,31 @@ Remember.. Be strong be careful be healthy and happy... And don't forget to love
 
         // 2. Runaway No Button
         const noBtn = document.getElementById('noBtn');
+        const btnContainer = document.querySelector('.btn-container');
 
         function escapeButton(e) {
             e.preventDefault();
 
-            const padding = 20;
-            const maxX = Math.max(
-                padding,
-                window.innerWidth - noBtn.offsetWidth - padding
-            );
-            const maxY = Math.max(
-                padding,
-                window.innerHeight - noBtn.offsetHeight - padding
-            );
+            const areaWidth = btnContainer.clientWidth;
+            const areaHeight = btnContainer.clientHeight;
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+            const padding = 5;
 
-            const randomX = Math.floor(
-                Math.random() * (maxX - padding + 1) + padding
-            );
-            const randomY = Math.floor(
-                Math.random() * (maxY - padding + 1) + padding
-            );
+            const maxX = Math.max(padding, areaWidth - btnWidth - padding);
+            const maxY = Math.max(padding, areaHeight - btnHeight - padding);
 
-            noBtn.style.position = 'fixed';
+            const randomX = padding + Math.random() * Math.max(0, maxX - padding);
+            const randomY = padding + Math.random() * Math.max(0, maxY - padding);
+
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
         }
 
-        noBtn.addEventListener('mouseover', escapeButton);
-        noBtn.addEventListener('touchstart', escapeButton, { passive: false });
-        noBtn.addEventListener('pointerdown', escapeButton);
+        noBtn.addEventListener('pointerenter', escapeButton);
+        noBtn.addEventListener('touchstart', escapeButton, {
+            passive: false
+        });
 
         // 3. Show the Birthday Letter
         function revealLove() {
